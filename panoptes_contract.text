@@ -1,0 +1,126 @@
+GET <host>/api/v1/<aideploymentid>/status
+General status details of the ai deployment with id "aideploymentid" managed by Panoptes. The list of observations in the reply is an extension point where in the future we can add more. This endpoint returns a 404 if the deployment with "aideploymentid" does not exist. Example reply:
+
+{
+    "id": "some_deployment_id",
+    "modelid": "ai model id for the deployment"
+    "displayName": "Some readable display name",
+    "status": "running",
+    "healthy": true,
+    "observations": [
+        {
+            "type": "drift",
+            "executions": [
+                "algorithmsexec1",
+                "algorithmsexec2",
+                ...
+            ]
+        }
+    ]
+}
+
+
+GET <host>/api/v1/<aideploymentid>/drift/algorithmsexec1?count=3
+Returns the 3 most recent drift detection measurements for ai deployment with id "aideploymentid", ordered from newst to oldest. Count should be a variable, "drift"-endpoint should correspond to one of the known observations Panoptes can do, so the front-end can programmatically work out which endpoints to use to retrieve specific observation data. Example reply:
+
+{
+    "id": "some_model_id",
+    "algorithm": "Kolmogorov-Smirnoff",
+    "historicFeatures": [
+        "feature1",
+        "feature2,
+    ],
+    "liveFeatures": [
+        "feature1",
+        "feature2,
+    ],
+    "upperBound": some numeric value,
+    "lowerBound": some other numeric value,
+    "observations": [
+        {
+            "timeStamp": "2022-03-01T09:00:00Z",
+            "rawValue": the measured drift value,
+            "discretisedValue": the discretised value
+            "unacceptableDrift": false
+        },
+        {
+            "timeStamp": "2022-03-01T08:59:50Z",
+            "rawValue": the measured drift value,
+            "discretisedValue": the discretised value
+            "unacceptableDrift": true
+        },
+        {
+            "timeStamp": "2022-03-01T08:59:40Z",
+            "rawValue": the measured drift value,
+            "discretisedValue": the discretised value
+            "unacceptableDrift": false
+        }
+    ]
+}
+
+
+GET <host>/api/v1/<aideploymentid>/drift?count=3
+Returns the 3 most recent drift detection measurements for ai deployment with id "aideploymentid", ordered from newst to oldest. Count should be a variable, "drift"-endpoint should correspond to one of the known observations Panoptes can do, so the front-end can programmatically work out which endpoints to use to retrieve specific observation data. Example reply:
+
+{
+    "id": "some_model_id",
+    "upperBound": 5,
+    "lowerBound": 0,
+    "algorithmExecutions": [
+        {
+            "algorithm": "Kolmogorov-Smirnoff",
+            "observations": [
+                {
+                    "timeStamp": "2022-03-01T09:00:00Z",
+                    "rawValue": the measured drift value,
+                    "discretisedValue": the discretised value
+                    "unacceptableDrift": false
+                },
+                {
+                    "timeStamp": "2022-03-01T08:59:50Z",
+                    "rawValue": the measured drift value,
+                    "discretisedValue": the discretised value
+                    "unacceptableDrift": true
+                },
+                {
+                    "timeStamp": "2022-03-01T08:59:40Z",
+                    "rawValue": the measured drift value,
+                    "discretisedValue": the discretised value
+                    "unacceptableDrift": false
+                }
+            ]
+        }
+    ]
+}
+
+
+GET <host>/api/v1/aideployments
+List of all deployments currently actively managed/observed by Panoptes. Example reply:
+
+[
+    {
+        "id": "some_deployment_id",
+        "model": model currently used,
+        "displayName": "Some readable display name"
+    },
+    {
+        "id": "some_deployment_id_2",
+        "model": model currently used,
+        "displayName": "Some readable display name"
+    }
+]
+
+
+GET <host>/api/v1/aimodels
+List of all models for which Panoptes is currently managing deployments or are in the repo. Example reply:
+
+[
+    {
+        "id": "some_model_id",
+        "displayName": "Some readable display name"
+    },
+    {
+        "id": "some_model_id_2",
+        "displayName": "Some readable display name"
+    }
+]

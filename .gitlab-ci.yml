@@ -1,0 +1,56 @@
+variables:
+  PROJECT_NAME: "Call Centre Dashboard"
+  PROJECT_COMPONENT: "ui"
+  DOCKER_PROJECT_NAME: "betalab-callcentre-dashboard"
+
+before_script:
+  - export CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:=$CI_COMMIT_REF_NAME}
+
+stages:
+- build
+- analyse
+- package
+
+build:
+  image: node:16
+  stage: build
+  script:
+  - npm config set always-auth true
+  - npm config set //agile.nat.bt.com/nexus/repository/BETALAB_BetaLab_npm/:_authToken ${BETALAB_NEXUS_TOKEN}
+  - yarn install
+  # - yarn test
+  - CI=true yarn build
+  - cp configs/sonar/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME.properties ./sonar-project.properties
+  artifacts:
+    paths:
+    - build/
+    - coverage/
+    expire_in: 1 week
+  only:
+  - unstable
+  - master
+  - release
+  - /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
+analyse:
+  image: node:16
+  stage: analyse
+  script:
+    - npm config set always-auth true
+    - npm config set //agile.nat.bt.com/nexus/repository/BETALAB_BetaLab_npm/:_authToken ${BETALAB_NEXUS_TOKEN}
+    - cp configs/sonar/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME.properties ./sonar-project.properties
+    - yarn install
+    - yarn sonar
+  only:
+  - unstable
+  - master
+  - /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
+package:
+  image: registry.docker.nat.bt.com/betalab-build-tools/bt-kaniko-build:latest
+  stage: package
+  script:
+  - echo "{\"auths\":{\"https://registry.docker.nat.bt.com\":{\"username\":\"$DOCKER_REGISTRY_USER\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+  - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT-$CI_COMMIT_REF_NAME:$CI_COMMIT_TAG
+  only:
+  - /^v[0-9]+\.[0-9]+\.[0-9]+$/

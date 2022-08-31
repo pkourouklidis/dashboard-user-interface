@@ -1,26 +1,25 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { project, messages, userDetails, notifications, workbenches, foundUsers } from './features/kleio/reducers';
+import { messages } from './features/kleio/reducers';
+import { simulationStatus, simulationList, simulation, aiModelStatus } from './features/app/reducers';
 
 const reducers = {
-    userDetails,
-    notifications,
-    workbenches,
-    project,
     messages,
-    foundUsers
+    simulationStatus,
+    simulationList,
+    simulation,
+    aiModelStatus
 };
 
 const rootReducer = combineReducers(reducers);
 
 const initialState = {
-    userDetails: {},
-    notifications: [],
-    workbenches: [],
-    project: {},
     messages: { successMessage: "", failureMessage: "", warningMessage: "", infoMessage: "" },
-    foundUsers: { users: [], searchingUsers: false, searchingUsersFailed: false }
+    simulationStatus: {},
+    simulationList: {},
+    simulation: {},
+    aiModelStatus: {}
 }
 
 export const configureStore = () => createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk)));
