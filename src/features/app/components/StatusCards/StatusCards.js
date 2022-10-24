@@ -187,7 +187,7 @@ const StatusCards = ({ simulationStatus, aiModelStatus }) => {
                                     </CardContent>
                                 </CardActionArea>
                             </Card>
-                            <AIDriftDialog open={aiHealthOpen} data={aiModelStatus.data} onClose={() => handleAiHealthClose()} />
+                            {/* <AIDriftDialog open={aiHealthOpen} data={aiModelStatus.data} onClose={() => handleAiHealthClose()} /> */}
                         </Box>
                         : "";
 
