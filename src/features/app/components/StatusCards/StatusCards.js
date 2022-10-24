@@ -168,7 +168,9 @@ const StatusCards = ({ simulationStatus, aiModelStatus }) => {
 
     const aiStatusCard = (aiModelStatus != undefined && Object.keys(aiModelStatus).length != 0) ? <Box>
                             <Card className={classes.root}>
-                                <CardActionArea style={{ height: "100%" }} onClick={() => handleAiHealthClickOpen()}>
+                                <CardActionArea style={{ height: "100%" }} 
+                                // onClick={() => handleAiHealthClickOpen()}
+                                >
                                     <CardContent>
                                         {
                                             aiModelStatus.healthy ?
