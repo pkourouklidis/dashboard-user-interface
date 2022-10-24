@@ -7,7 +7,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { getAIModelStatus, getSimulationStatus } from '../../selectors';
-import AIDriftDialog from '../AIDeployment/AIDriftDialog';
+// import AIDriftDialog from '../AIDeployment/AIDriftDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -28,15 +28,15 @@ const useStyles = makeStyles({
 
 const StatusCards = ({ simulationStatus, aiModelStatus }) => {
     const [status, setStatus] = React.useState("unknown");
-    const [aiHealthOpen, setAiHealthOpen] = React.useState(false);
+    // const [aiHealthOpen, setAiHealthOpen] = React.useState(false);
 
-    const handleAiHealthClickOpen = () => {
-        setAiHealthOpen(true);
-    };
+    // const handleAiHealthClickOpen = () => {
+    //     setAiHealthOpen(true);
+    // };
 
-    const handleAiHealthClose = () => {
-        setAiHealthOpen(false);
-    };
+    // const handleAiHealthClose = () => {
+    //     setAiHealthOpen(false);
+    // };
 
     const classes = useStyles();
 
