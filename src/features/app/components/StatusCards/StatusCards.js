@@ -7,7 +7,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { getAIModelStatus, getSimulationStatus } from '../../selectors';
-// import AIDriftDialog from '../AIDeployment/AIDriftDialog';
+import AIDriftDialog from '../AIDeployment/AIDriftDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -28,15 +28,15 @@ const useStyles = makeStyles({
 
 const StatusCards = ({ simulationStatus, aiModelStatus }) => {
     const [status, setStatus] = React.useState("unknown");
-    // const [aiHealthOpen, setAiHealthOpen] = React.useState(false);
+    const [aiHealthOpen, setAiHealthOpen] = React.useState(false);
 
-    // const handleAiHealthClickOpen = () => {
-    //     setAiHealthOpen(true);
-    // };
+    const handleAiHealthClickOpen = () => {
+        setAiHealthOpen(true);
+    };
 
-    // const handleAiHealthClose = () => {
-    //     setAiHealthOpen(false);
-    // };
+    const handleAiHealthClose = () => {
+        setAiHealthOpen(false);
+    };
 
     const classes = useStyles();
 
@@ -48,128 +48,45 @@ const StatusCards = ({ simulationStatus, aiModelStatus }) => {
 
     if (simulationStatus) start = new Date(simulationStatus.simulationStartTime);
 
-    // const aiStatus = {
-    //     "id": "some_deployment_id",
-    //     "modelid": "ai model id for the deployment",
-    //     "displayName": "Some readable display name",
-    //     "status": "running",
-    //     "healthy": false,
-    //     "observations": [
-    //         {
-    //             "type": "drift",
-    //             "executions": [
-    //                 "algorithmsexec1",
-    //                 "algorithmsexec2"
-    //             ]
-    //         }
-    //     ],
-    //     "data": {
-    //         "id": "some_model_id",
-    //         "upperBound": 5,
-    //         "lowerBound": 0,
-    //         "algorithmExecutions": [
-    //             {
-    //                 "algorithm": "Kolmogorov-Smirnoff",
-    //                 "observations": [
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:00Z",
-    //                         "rawValue": 320,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:10Z",
-    //                         "rawValue": 412,
-    //                         "discretisedValue": 2,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:20Z",
-    //                         "rawValue": 322,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:30Z",
-    //                         "rawValue": 500,
-    //                         "discretisedValue": 3,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:40Z",
-    //                         "rawValue": 435,
-    //                         "discretisedValue": 2,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:50Z",
-    //                         "rawValue": 322,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:01:00Z",
-    //                         "rawValue": 412,
-    //                         "discretisedValue": 2,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                 ]
-    //             },
-    //             {
-    //                 "algorithm": "Some-Other-Drift-Detector",
-    //                 "observations": [
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:00Z",
-    //                         "rawValue": 412,
-    //                         "discretisedValue": 2,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:10Z",
-    //                         "rawValue": 412,
-    //                         "discretisedValue": 2,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:20Z",
-    //                         "rawValue": 600,
-    //                         "discretisedValue": 4,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:30Z",
-    //                         "rawValue": 500,
-    //                         "discretisedValue": 3,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:40Z",
-    //                         "rawValue": 200,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:00:50Z",
-    //                         "rawValue": 322,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                     {
-    //                         "timeStamp": "2022-03-01T09:01:00Z",
-    //                         "rawValue": 123,
-    //                         "discretisedValue": 1,
-    //                         "unacceptableDrift": false
-    //                     },
-    //                 ]
-    //             }
-    //         ]
+    // const aiStatus = [
+    //     {
+    //         algorithm: "kstest",
+    //         historicFeatures: ["foo", "bar"],
+    //         liveFeatures: ["foo", "bar"],
+    //         timestamp: "2022-11-17T16:48:04+00:00",
+    //         rawValue: 0.01,
+    //         level: 1
+    //     },
+    //     {
+    //         algorithm: "kstest2",
+    //         historicFeatures: ["foo", "bar"],
+    //         liveFeatures: ["foo", "bar"],
+    //         timestamp: "2022-11-17T16:50:04+00:00",
+    //         rawValue: 0.5,
+    //         level: 0
+    //     },
+    //     {
+    //         algorithm: "kstest",
+    //         historicFeatures: ["foo", "bar"],
+    //         liveFeatures: ["foo", "bar"],
+    //         timestamp: "2022-11-17T16:55:04+00:00",
+    //         rawValue: 0.5,
+    //         level: 0
+    //     },
+    //     {
+    //         algorithm: "kstest2",
+    //         historicFeatures: ["foo", "bar"],
+    //         liveFeatures: ["foo", "bar"],
+    //         timestamp: "2022-11-17T16:55:20+00:00",
+    //         rawValue: 0.5,
+    //         level: 0
     //     }
-    // };
+    // ];
 
     const aiStatusCard = (aiModelStatus != undefined && Object.keys(aiModelStatus).length != 0) ? <Box>
                             <Card className={classes.root}>
                                 <CardActionArea style={{ height: "100%" }} 
-                                // onClick={() => handleAiHealthClickOpen()}
+                                onClick={() => handleAiHealthClickOpen()}
                                 >
                                     <CardContent>
                                         {
@@ -189,7 +106,7 @@ const StatusCards = ({ simulationStatus, aiModelStatus }) => {
                                     </CardContent>
                                 </CardActionArea>
                             </Card>
-                            {/* <AIDriftDialog open={aiHealthOpen} data={aiModelStatus.data} onClose={() => handleAiHealthClose()} /> */}
+                            <AIDriftDialog open={aiHealthOpen} aiData={aiModelStatus.data} onClose={() => handleAiHealthClose()} />
                         </Box>
                         : "";
 
@@ -245,7 +162,7 @@ const StatusCards = ({ simulationStatus, aiModelStatus }) => {
                     </Typography>
                 </CardContent>
             </Card>
-            {aiStatusCard};
+            {aiStatusCard}
         </Box>
     )
 }

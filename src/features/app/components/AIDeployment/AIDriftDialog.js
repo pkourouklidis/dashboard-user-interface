@@ -17,27 +17,31 @@ function AIDriftDialog({onClose, open, aiData}) {
     };
 
     const extractDriftData = () => {
-        let result = [];
+        let series = [];
+        let results = {};
 
-        aiData.algorithmExecutions.forEach(function (execution) {
-            let executionData = [];
-            execution.observations.forEach(function (observation) {
-                executionData.push(observation.discretisedValue);
+        aiData.forEach(function (execution) {
+            if (results[execution.algorithm] === undefined){
+                results[execution.algorithm] = []
+            }
+            results[execution.algorithm].push(execution.level);
             })
-            result.push({ "name": execution.algorithm, "data": executionData });
-        })
 
-        return result;
-    }
+        for(const [key, value] of Object.entries(results)){
+            series.push({"name": key, "data": value});
+        }
+        return series;
+        }
+
+        
+    
 
     const extractExecutionTimeData = () => {
         let result = [];
 
-        aiData.algorithmExecutions.forEach(function (execution) {
-            execution.observations.forEach(function (observation) {
-                const arrivalTime = new Date(observation.timeStamp);
-                result.push(arrivalTime.getHours() + ":" + (arrivalTime.getMinutes() < 10 ? 0 : "") + arrivalTime.getMinutes() + ":" +  (arrivalTime.getSeconds() < 10 ? 0 : "") + arrivalTime.getSeconds());
-            })
+        aiData.forEach(function (execution) {
+            const arrivalTime = new Date(execution.timestamp);
+            result.push(arrivalTime.getHours() + ":" + (arrivalTime.getMinutes() < 10 ? 0 : "") + arrivalTime.getMinutes() + ":" +  (arrivalTime.getSeconds() < 10 ? 0 : "") + arrivalTime.getSeconds());
         })
 
         return result;
