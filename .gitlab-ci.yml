@@ -3,9 +3,6 @@ variables:
   PROJECT_COMPONENT: "ui"
   DOCKER_PROJECT_NAME: "betalab-callcentre-dashboard"
 
-before_script:
-  - export CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:=$CI_COMMIT_REF_NAME}
-
 stages:
 - build
 - analyse
