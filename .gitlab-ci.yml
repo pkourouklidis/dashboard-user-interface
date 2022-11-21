@@ -38,7 +38,8 @@ analyse:
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/39726/packages/npm/:_authToken ${CI_JOB_TOKEN}
     - cp configs/sonar/$CI_COMMIT_BRANCH.properties ./sonar-project.properties
     - echo sonar.login=$SONAR_TOKEN >> ./sonar-project.properties
-    - echo ./sonar-project.properties
+    - cat ./sonar-project.properties
+    - ls
     - yarn install
     - yarn sonar
   only:
