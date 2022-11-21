@@ -39,7 +39,7 @@ analyse:
     - npm config set always-auth true
     - npm config set //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/39726/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    - cp configs/sonar/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME.properties ./sonar-project.properties
+    - cp ./sonar-project.properties configs/sonar/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME.properties
     - yarn install
     - yarn sonar
   only:
